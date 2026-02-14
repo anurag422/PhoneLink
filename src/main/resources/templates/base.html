@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title layout:title-pattern="$CONTENT_TITLE - PhoneLink">PhoneLink</title>
+
+    <!-- Flowbite -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css" rel="stylesheet"/>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind -->
+    <link th:href="@{/css/output.css}" rel="stylesheet">
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-200 selection:text-indigo-900">
+
+<!-- Navbar -->
+<div th:if="${loggedUser}">
+    <div th:replace="~{user/user_navbar :: user_navbar}"></div>
+</div>
+
+<div th:unless="${loggedUser}">
+    <div th:replace="~{navbar :: navbar}"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="pt-16 min-h-screen">
+    <section layout:fragment="content"></section>
+</main>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | PhoneLink</title>
+</head>
+<body>
+
+<div class="sm:pl-64" layout:fragment="content">
+
+    <!-- Sidebar -->
+    <div th:if="${loggedUser}">
+        <div th:replace="~{user/sidebar :: sidebar}"></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class=" min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+
+            <!-- PAGE HEADER -->
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Dashboard
+                    </div>
+
+                    <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                        Welcome back,
+                        <span th:text="${loggedUser.name}" class="text-indigo-700">Anurag</span> 👋
+                    </h1>
+
+                    <p class="mt-2 text-slate-600 max-w-2xl">
+                        Manage your contacts securely, access them anywhere, and stay organized effortlessly.
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a th:href="@{/user/contacts/add}"
+                       class="px-6 py-3 rounded-2xl bg-indigo-600 text-white font-bold
+                              hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition text-center">
+                        <i class="fa-solid fa-plus mr-2"></i>
+                        Add Contact
+                    </a>
+
+                    <a th:href="@{/user/contacts}"
+                       class="px-6 py-3 rounded-2xl bg-white border border-gray-200 text-slate-700 font-bold
+                              hover:bg-gray-50 hover:shadow transition text-center">
+                        <i class="fa-solid fa-address-book mr-2"></i>
+                        View Contacts
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- HERO CARD -->
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-xl
+                        shadow-xl shadow-slate-200/50 p-8 sm:p-10 mb-10">
+
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-400/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl"></div>
+
+                <div class="relative">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                        Your PhoneLink workspace
+                    </h2>
+
+                    <p class="mt-2 text-slate-600 max-w-2xl">
+                        Quick access to contacts, favorites, and your profile settings — all in one place.
+                    </p>
+
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <a th:href="@{/user/contacts/add}"
+                           class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-bold
+                                  hover:bg-slate-800 hover:shadow-lg transition">
+                            <i class="fa-solid fa-user-plus mr-2"></i>
+                            Add New Contact
+                        </a>
+
+                        <a th:href="@{/user/profile}"
+                           class="px-5 py-3 rounded-2xl bg-white border border-gray-200 text-slate-700 font-bold
+                                  hover:bg-gray-50 hover:shadow transition">
+                            <i class="fa-solid fa-user-gear mr-2"></i>
+                            Profile Settings
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- STATS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+                <!-- Total Contacts -->
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6 hover:shadow-xl transition">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                                Total Contacts
+                            </p>
+                            <h2 class="mt-2 text-3xl font-extrabold text-slate-900" th:text="${totalContacts}">
+                                0
+                            </h2>
+                        </div>
+
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+                            <i class="fa-solid fa-address-book text-indigo-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6 hover:shadow-xl transition">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                                Favorites
+                            </p>
+                            <h2 class="mt-2 text-3xl font-extrabold text-slate-900" th:text="${totalFavourite}">
+                                0
+                            </h2>
+                        </div>
+
+                        <div class="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center">
+                            <i class="fa-solid fa-star text-pink-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud Sync -->
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6 hover:shadow-xl transition">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                                Cloud Sync
+                            </p>
+                            <h2 class="mt-2 text-3xl font-extrabold text-slate-900">
+                                ON
+                            </h2>
+                        </div>
+
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-cloud text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Status -->
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6 hover:shadow-xl transition">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                                Account Status
+                            </p>
+                            <h2 class="mt-2 text-3xl font-extrabold text-green-600">
+                                Active
+                            </h2>
+                        </div>
+
+                        <div class="w-12 h-12 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center">
+                            <i class="fa-solid fa-shield-halved text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10">
+
+                <!-- Add Contact -->
+                <a th:href="@{/user/contacts/add}"
+                   class="group rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-7
+                          hover:shadow-xl hover:-translate-y-1 transition block">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-extrabold text-slate-900">
+                            Add Contact
+                        </h3>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center">
+                            <i class="fa-solid fa-plus text-indigo-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-slate-600 leading-relaxed">
+                        Save new contacts securely in your PhoneLink cloud account.
+                    </p>
+                    <p class="mt-5 font-bold text-indigo-700 group-hover:underline">
+                        Go →
+                    </p>
+                </a>
+
+                <!-- Import Contacts -->
+                <a href="#"
+                   class="group rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-7
+                          hover:shadow-xl hover:-translate-y-1 transition block">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-extrabold text-slate-900">
+                            Import Contacts
+                        </h3>
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center">
+                            <i class="fa-solid fa-file-import text-blue-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-slate-600 leading-relaxed">
+                        Upload contacts from CSV or backup file in one click.
+                    </p>
+                    <p class="mt-5 font-bold text-blue-700 group-hover:underline">
+                        Import →
+                    </p>
+                </a>
+
+                <!-- Profile -->
+                <a th:href="@{/user/profile}"
+                   class="group rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-7
+                          hover:shadow-xl hover:-translate-y-1 transition block">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-extrabold text-slate-900">
+                            Profile Settings
+                        </h3>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center">
+                            <i class="fa-solid fa-user-gear text-purple-600 text-lg"></i>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-slate-600 leading-relaxed">
+                        Manage profile details, security and verification status.
+                    </p>
+                    <p class="mt-5 font-bold text-purple-700 group-hover:underline">
+                        Open →
+                    </p>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

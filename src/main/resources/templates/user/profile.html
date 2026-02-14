@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{base}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${loggedUser.name} + ' | Profile'">Profile</title>
+</head>
+
+<body>
+
+<div class="sm:pl-64" layout:fragment="content">
+
+    <!-- Sidebar -->
+    <div th:if="${loggedUser}">
+        <div th:replace="~{user/sidebar :: sidebar}"></div>
+    </div>
+
+    <!-- PAGE -->
+    <div class=" min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+
+            <!-- PAGE HEADER -->
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">
+                        <i class="fa-solid fa-user"></i>
+                        Profile Overview
+                    </div>
+
+                    <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                        Your Profile
+                    </h1>
+
+                    <p class="mt-2 text-slate-600">
+                        View your details, verification status and account information.
+                    </p>
+                </div>
+
+                <div class="flex gap-3">
+                    <a th:href="@{/user/dashboard}"
+                       class="px-5 py-3 rounded-2xl bg-white border border-gray-200 text-slate-700 font-bold
+                              hover:bg-gray-50 hover:shadow transition">
+                        <i class="fa-solid fa-arrow-left mr-2"></i>
+                        Dashboard
+                    </a>
+
+                    <a th:href="@{/edit_profile_view}"
+                       class="px-5 py-3 rounded-2xl bg-indigo-600 text-white font-bold
+                              hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i>
+                        Edit Profile
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- MAIN PROFILE CARD -->
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/70 backdrop-blur-xl
+                        shadow-xl shadow-slate-200/50">
+
+                <!-- Decorative gradient blobs -->
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-indigo-400/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl"></div>
+
+                <div class="relative px-6 sm:px-10 py-10">
+
+                    <div class="flex flex-col lg:flex-row gap-10 lg:items-center">
+
+                        <!-- Avatar -->
+                        <div class="relative shrink-0">
+                            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-[2rem] overflow-hidden shadow-2xl ring-4 ring-white">
+                                <img th:src="@{${loggedUser.profilePic}}"
+                                     onerror="this.src='/images/defaultUser.jpg'"
+                                     class="w-full h-full object-cover"
+                                     alt="Profile">
+                            </div>
+
+                            <!-- Online status -->
+                            <div class="absolute -bottom-3 -right-3">
+                                <div class="w-10 h-10 rounded-full border-4 border-white shadow-lg flex items-center justify-center"
+                                     th:classappend="${loggedUser.enabled ? 'bg-green-500' : 'bg-red-500'}">
+                                    <i class="fa-solid fa-check text-white text-sm"
+                                       th:if="${loggedUser.enabled}"></i>
+                                    <i class="fa-solid fa-xmark text-white text-sm"
+                                       th:if="${!loggedUser.enabled}"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Info -->
+                        <div class="flex-1">
+
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight"
+                                th:text="${loggedUser.name}">
+                                Anurag Sharma
+                            </h2>
+
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+
+                                <div class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/70 border border-gray-200">
+                                    <i class="fa-solid fa-envelope text-indigo-600"></i>
+                                    <span class="font-semibold text-slate-800 break-all"
+                                          th:text="${loggedUser.email}">
+                                        anurag@gmail.com
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/70 border border-gray-200">
+                                    <i class="fa-solid fa-phone text-indigo-600"></i>
+                                    <span class="font-semibold text-slate-800"
+                                          th:text="${loggedUser.phoneNumber}">
+                                        9876543210
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <!-- Badges -->
+                            <div class="flex flex-wrap gap-3 mt-6">
+
+                                <span class="px-4 py-2 text-sm rounded-full font-bold border shadow-sm"
+                                      th:classappend="${loggedUser.emailVerified
+                                        ? 'bg-green-50 text-green-700 border-green-200'
+                                        : 'bg-red-50 text-red-700 border-red-200'}"
+                                      th:text="${loggedUser.emailVerified
+                                        ? 'Email Verified'
+                                        : 'Email Not Verified'}">
+                                </span>
+
+                                <span class="px-4 py-2 text-sm rounded-full font-bold border shadow-sm"
+                                      th:classappend="${loggedUser.numberVerified
+                                        ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                        : 'bg-orange-50 text-orange-700 border-orange-200'}"
+                                      th:text="${loggedUser.numberVerified
+                                        ? 'Phone Verified'
+                                        : 'Phone Not Verified'}">
+                                </span>
+
+                                <span class="px-4 py-2 text-sm rounded-full font-bold border shadow-sm"
+                                      th:classappend="${loggedUser.enabled
+                                        ? 'bg-slate-900 text-white border-slate-900'
+                                        : 'bg-gray-100 text-gray-700 border-gray-200'}"
+                                      th:text="${loggedUser.enabled ? 'Account Active' : 'Account Inactive'}">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- STATS (Optional but looks PRO) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                        Email Status
+                    </p>
+                    <p class="mt-2 text-2xl font-extrabold"
+                       th:classappend="${loggedUser.emailVerified ? 'text-green-600' : 'text-red-600'}"
+                       th:text="${loggedUser.emailVerified ? 'Verified' : 'Pending'}">
+                    </p>
+                    <p class="mt-1 text-slate-600 text-sm">
+                        Your email verification helps secure your account.
+                    </p>
+                </div>
+
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                        Phone Status
+                    </p>
+                    <p class="mt-2 text-2xl font-extrabold"
+                       th:classappend="${loggedUser.numberVerified ? 'text-blue-600' : 'text-orange-600'}"
+                       th:text="${loggedUser.numberVerified ? 'Verified' : 'Pending'}">
+                    </p>
+                    <p class="mt-1 text-slate-600 text-sm">
+                        Phone verification enables better security.
+                    </p>
+                </div>
+
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60 shadow-lg shadow-slate-200/40 p-6">
+                    <p class="text-xs uppercase tracking-wider text-slate-500 font-bold">
+                        Account
+                    </p>
+                    <p class="mt-2 text-2xl font-extrabold"
+                       th:classappend="${loggedUser.enabled ? 'text-slate-900' : 'text-red-600'}"
+                       th:text="${loggedUser.enabled ? 'Active' : 'Disabled'}">
+                    </p>
+                    <p class="mt-1 text-slate-600 text-sm">
+                        You can manage your profile anytime.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ABOUT + QUICK INFO -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+
+                <!-- ABOUT -->
+                <div class="lg:col-span-2 rounded-3xl bg-white/70 backdrop-blur border border-white/60
+                            shadow-xl shadow-slate-200/40 p-7 sm:p-9">
+
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-indigo-600"></i>
+                        About You
+                    </h3>
+
+                    <p class="mt-4 text-slate-600 leading-relaxed"
+                       th:text="${loggedUser.about}">
+                        About user
+                    </p>
+
+                </div>
+
+                <!-- QUICK INFO -->
+                <div class="rounded-3xl bg-white/70 backdrop-blur border border-white/60
+                            shadow-xl shadow-slate-200/40 p-7 sm:p-9 space-y-6">
+
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-indigo-600"></i>
+                        Quick Info
+                    </h3>
+
+                    <div class="space-y-4">
+
+                        <div class="p-4 rounded-2xl bg-white border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs uppercase text-slate-500 tracking-wide font-bold">
+                                Full Name
+                            </p>
+                            <p class="mt-1 font-extrabold text-slate-900"
+                               th:text="${loggedUser.name}">
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs uppercase text-slate-500 tracking-wide font-bold">
+                                Email
+                            </p>
+                            <p class="mt-1 font-extrabold text-slate-900 break-all"
+                               th:text="${loggedUser.email}">
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-white border border-gray-200 hover:shadow-md transition">
+                            <p class="text-xs uppercase text-slate-500 tracking-wide font-bold">
+                                Phone Number
+                            </p>
+                            <p class="mt-1 font-extrabold text-slate-900"
+                               th:text="${loggedUser.phoneNumber}">
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FOOTER ACTIONS -->
+            <div class="mt-10 flex flex-col sm:flex-row gap-4">
+
+                <a th:href="@{/user/dashboard}"
+                   class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-white border border-gray-200 text-slate-700 font-bold
+                          hover:bg-gray-50 hover:shadow transition text-center">
+                    Cancel
+                </a>
+
+                <a th:href="@{/edit_profile_view}"
+                   class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-indigo-600 text-white font-bold
+                          hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 transition text-center">
+                    Edit Profile
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

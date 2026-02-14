@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="relative min-h-[calc(100vh-4rem)] overflow-hidden">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        <img src="/images/banner.jpg"
+             alt="PhoneLink Banner"
+             class="h-full w-full object-cover"/>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/30"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative max-w-7xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-16 items-center">
+
+        <div>
+            <p class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur">
+                <i class="fa-solid fa-shield-halved text-indigo-300"></i>
+                Secure • Fast • Cloud Ready
+            </p>
+
+            <h2 class="mt-6 text-4xl md:text-6xl font-extrabold leading-tight text-white tracking-tight">
+                Your Contacts.
+                <br>
+                <span class="text-indigo-300 drop-shadow-lg">
+                    Organized & Secure.
+                </span>
+            </h2>
+
+            <p class="mt-6 text-white/75 text-lg max-w-xl leading-relaxed">
+                PhoneLink lets you save, manage, and access your contacts securely with
+                email verification, cloud sync, and blazing-fast search.
+            </p>
+
+            <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                <a th:href="@{/signup}"
+                   class="inline-flex items-center justify-center gap-2 bg-indigo-500 text-white px-7 py-4 rounded-xl font-semibold
+                          hover:bg-indigo-600 hover:scale-[1.02] transition shadow-lg shadow-indigo-500/20">
+                    Get Started
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a th:href="@{/service}"
+                   class="inline-flex items-center justify-center gap-2 border border-white/20 bg-white/5 text-white px-7 py-4 rounded-xl
+                          hover:bg-white/10 transition backdrop-blur">
+                    View Features
+                    <i class="fa-solid fa-layer-group"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right side: Feature Card -->
+        <div class="hidden md:block">
+            <div class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
+                <h3 class="text-white font-semibold text-xl mb-6">
+                    Why PhoneLink?
+                </h3>
+
+                <div class="space-y-5">
+                    <div class="flex items-start gap-4">
+                        <div class="h-11 w-11 rounded-xl bg-indigo-500/15 border border-indigo-400/20 grid place-items-center">
+                            <i class="fa-solid fa-bolt text-indigo-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">Fast Search</p>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                Find contacts instantly with optimized queries and filters.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="h-11 w-11 rounded-xl bg-emerald-500/15 border border-emerald-400/20 grid place-items-center">
+                            <i class="fa-solid fa-lock text-emerald-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">Secure Access</p>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                Protected routes, encryption-ready storage, and verified accounts.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="h-11 w-11 rounded-xl bg-sky-500/15 border border-sky-400/20 grid place-items-center">
+                            <i class="fa-solid fa-cloud text-sky-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">Cloud Sync</p>
+                            <p class="text-white/60 text-sm leading-relaxed">
+                                Your contacts stay accessible across devices anytime.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
