@@ -17,11 +17,6 @@ cloudinary.cloud.name=YOUR_CLOUDINARY_NAME
 cloudinary.cloud.key=YOUR_CLOUDINARY_KEY
 cloudinary.cloud.secret=YOUR_CLOUDINARY_SECRET
 
-spring.mail.host=live.smtp.mailtrap.io
-spring.mail.port=587
-spring.mail.username=YOUR_MAILTRAP_USERNAME
-spring.mail.password=YOUR_MAILTRAP_PASSWORD
-
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
 
