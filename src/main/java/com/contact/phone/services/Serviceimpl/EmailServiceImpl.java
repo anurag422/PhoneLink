@@ -13,8 +13,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}")
-    private String domainName;
+    private String domainName = "phonelink.official24@gmail.com";
 
     @Override
     public void sendEmail(String to, String subject, String body) {
