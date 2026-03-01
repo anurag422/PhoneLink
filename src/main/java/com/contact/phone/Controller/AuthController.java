@@ -41,64 +41,75 @@ public class AuthController {
     @GetMapping("/verify-email")
     public String verifyEmail(@RequestParam("token") String token, HttpSession session){
 
-        User user = userRepository.findByEmailToken(token).orElse(null);
+        Optional<User> optionalUser = userRepository.findByEmailToken(token);
 
-        if (user != null){
+        if (optionalUser.isPresent()) {
 
-            if (user.getEmailToken().equalsIgnoreCase(token)){
+            User user = optionalUser.get();
 
-                user.setEnabled(true);
-                user.setEmailVerified(true);
-                userRepository.save(user);
-                session.setAttribute("message", Message.builder().content("User Verified Successfully , Now you can Login").type(MessageType.success).build());
-                return "success_page";
-            }
-            session.setAttribute("message",Message.builder().content("Email not verified ! Token is not associated with user").type(MessageType.red).build());
-            return "error_page";
+            user.setEnabled(true);
+            user.setEmailVerified(true);
+            user.setEmailToken(null); // token clear after verification
 
+            userRepository.save(user);
+
+            session.setAttribute("message",
+                    Message.builder()
+                            .content("User Verified Successfully, Now you can Login")
+                            .type(MessageType.success)
+                            .build());
+
+            return "success_page";
         }
-        session.setAttribute("message",Message.builder().content("Email not verified ! ").type(MessageType.red).build());
+
+        session.setAttribute("message",
+                Message.builder()
+                        .content("Invalid or Expired Token")
+                        .type(MessageType.red)
+                        .build());
+
         return "error_page";
-    }
-
-
-    @GetMapping("/forget_password")
-    public String forgetPasswordPage(){
-        return "forget_password";
     }
 
     @PostMapping("/forget_password")
     @Transactional
-    public String forgetPassword(Authentication authentication,@RequestParam String email,HttpSession session){
+    public String forgetPassword(@RequestParam String email, HttpSession session){
 
         Optional<User> byEmail = userRepository.findByEmail(email);
 
         if (byEmail.isEmpty()){
-            session.setAttribute("message",Message.builder().content("Email Not Registered").type(MessageType.red).build());
+            session.setAttribute("message",
+                    Message.builder()
+                            .content("Email Not Registered")
+                            .type(MessageType.red)
+                            .build());
             return "redirect:/auth/forget_password";
         }
 
         User user = byEmail.get();
 
-//        if (user.isOAuthUser()){
-//
-//        }
-
         passwordRepository.deleteByUser(user);
 
         String token = UUID.randomUUID().toString();
 
-        ForgetPassword forgetPassword =new ForgetPassword();
+        ForgetPassword forgetPassword = new ForgetPassword();
         forgetPassword.setToken(token);
         forgetPassword.setUser(user);
         forgetPassword.setExpiryDate(LocalDateTime.now().plusMinutes(30));
 
         passwordRepository.save(forgetPassword);
 
-        String ResetLink = Helper.getEmailTokenForResetPassword(token);
+        try {
+            emailService.sendResetPasswordEmail(user.getEmail(), token);
+        } catch (Exception e) {
+            System.out.println("Reset email failed: " + e.getMessage());
+        }
 
-        emailService.sendEmail(user.getEmail(), "Reset Password", "Click here to reset Password "+ResetLink);
-
+        session.setAttribute("message",
+                Message.builder()
+                        .content("Reset link sent to your email")
+                        .type(MessageType.success)
+                        .build());
 
         return "redirect:/login";
     }

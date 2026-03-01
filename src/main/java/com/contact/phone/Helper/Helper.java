@@ -38,15 +38,5 @@ public class Helper {
     }
 
 
-    public static String getEmailTokenForVerifyEmail(String emailToken){
-
-        return "http://localhost:8080/auth/verify-email?token=" + emailToken;
-
-    }
-
-    public static String getEmailTokenForResetPassword(String emailToken){
-        return "http://localhost:8080/auth/reset_password?token=" + emailToken;
-    }
-
 
 }

@@ -33,21 +33,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+
         String userId = UUID.randomUUID().toString();
         user.setUserId(userId);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         user.setRoles(List.of(AppConstant.Role_User));
 
-
         String emailToken = UUID.randomUUID().toString();
-
         user.setEmailToken(emailToken);
-        User saved = this.userRepository.save(user);
-        String emailLink = Helper.getEmailTokenForVerifyEmail(emailToken);
 
-        emailService.sendEmail(saved.getEmail(), "Verify Email Account : For PhoneLink","To verify the account press the Link "+emailLink);
+        User saved = this.userRepository.save(user);
+
+        try {
+            emailService.sendVerificationEmail(
+                    saved.getEmail(),
+                    saved.getName(),
+                    emailToken
+            );
+        } catch (Exception e) {
+            System.out.println("Email sending failed: " + e.getMessage());
+        }
 
         return saved;
     }
