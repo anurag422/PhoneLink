@@ -52,6 +52,9 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
              user.setName(oAuth2User.getAttribute("name").toString());
              user.setAbout("User is Created by Google");
              user.setProvider(Provider.GOOGLE);
+             user.setEnabled(true);
+             user.setEmailVerified(true);
+             user.setNumberVerified(true);
 
          } else if (authorizedClientRegistrationId.equalsIgnoreCase("github")) {
 
